@@ -249,6 +249,76 @@ static int hf_ndmp_fragment_count = -1;
 static int hf_ndmp_reassembled_in = -1;
 static int hf_ndmp_reassembled_length = -1;
 
+/* NDMP v4 Snapshot Management Extension */
+static int hf_ndmp_snap_create_pathname = -1;
+static int hf_ndmp_snap_create_snapname = -1;
+static int hf_ndmp_snap_delete_snapname = -1;
+static int hf_ndmp_snap_receover_snapname = -1;
+static int hf_ndmp_snap_recovery_flag = -1;
+static int hf_ndmp_snap_rename_snapname = -1;
+static int hf_ndmp_snap_rename_new_snapname = -1;
+static int hf_ndmp_snap_get_snapshot_names_pathname = -1;
+static int hf_ndmp_snap_get_snapnames_snapnames = -1;
+static int hf_ndmp_snap_get_snapnames_snapnames_name = -1;
+static int hf_ndmp_snap_service_info_create_support_flag = -1;
+static int hf_ndmp_snap_service_info_recover_support_flag = -1;
+static int hf_ndmp_snap_service_info_reserve_support_flag = -1;
+static int hf_ndmp_snap_service_info_schedule_support_flag = -1;
+static int hf_ndmp_snap_service_info_relocation_support_flag = -1;
+static int hf_ndmp_snap_get_snapshot_pathname = -1;
+static int hf_ndmp_snap_get_state_snapname = -1;
+static int hf_ndmp_snap_get_state_unsupported = -1;
+static int hf_ndmp_snap_get_state_pathname = -1;
+static int hf_ndmp_snap_get_state_used_precent = -1;
+static int hf_ndmp_snap_get_state_total_precent = -1;
+static int hf_ndmp_snap_get_state_date = -1;
+static int hf_ndmp_snap_get_state_snapid = -1;
+static int hf_ndmp_snap_get_state_busy = -1;
+static int hf_ndmp_snap_get_state_dependency = -1;
+static int hf_ndmp_snap_get_cdr_op_state_type = -1;
+static int hf_ndmp_snap_get_cdr_op_unsupported = -1;
+static int hf_ndmp_snap_get_cdr_op_total_files = -1;
+static int hf_ndmp_snap_get_cdr_op_processed_files = -1;
+static int hf_ndmp_snap_get_cdr_op_exception_files = -1;
+static int hf_ndmp_snap_get_cdr_op_date = -1;
+static int hf_ndmp_snap_get_snapshot_path_pathname = -1;
+static int hf_ndmp_snap_get_snapshot_path_max_snapshots = -1;
+static int hf_ndmp_snap_get_snapshot_path_path_type = -1;
+static int hf_ndmp_snap_set_reserve_pathname = -1;
+static int hf_ndmp_snap_set_reserve_precent = -1;
+static int hf_ndmp_snap_get_reserve_info_pathname = -1;
+static int hf_ndmp_snap_get_reserve_kb = -1;
+static int hf_ndmp_snap_get_reserve_precent = -1;
+static int hf_ndmp_snap_shcedule_hourlist_hour = -1;
+static int hf_ndmp_snap_set_shcedule_pathname = -1;
+static int hf_ndmp_snap_set_shcedule_week = -1;
+static int hf_ndmp_snap_set_shcedule_day = -1;
+static int hf_ndmp_snap_set_shcedule_hours = -1;
+static int hf_ndmp_snap_set_shcedule_hourlist = -1;
+static int hf_ndmp_snap_set_shcedule_dayofweek = -1;
+static int hf_ndmp_snap_set_shcedule_timeofday = -1;
+static int hf_ndmp_snap_set_shcedule_snappath = -1;
+static int hf_ndmp_snap_get_shcedule_pathname = -1;
+static int hf_ndmp_snap_get_shcedule_week = -1;
+static int hf_ndmp_snap_get_shcedule_day = -1;
+static int hf_ndmp_snap_get_shcedule_hours = -1;
+static int hf_ndmp_snap_get_shcedule_hourlist = -1;
+static int hf_ndmp_snap_get_shcedule_dayofweek = -1;
+static int hf_ndmp_snap_get_shcedule_timeofday = -1;
+static int hf_ndmp_snap_get_shcedule_snappath = -1;
+static int hf_ndmp_snap_dir_list_pathname = -1;
+static int hf_ndmp_snap_dir_list_flags = -1;
+static int hf_ndmp_snap_dir_list_max_entries = -1;
+static int hf_ndmp_snap_dir_list_status = -1;
+static int hf_ndmp_snap_create_end_reason = -1;
+static int hf_ndmp_snap_create_end_snapid = -1;
+static int hf_ndmp_snap_delete_end_reason = -1;
+static int hf_ndmp_snap_recover_end_reason = -1;
+/* NDMP V4 Backup Restart Extension */
+static int hf_ndmp_bre_context;
+static int hf_ndmp_bre_get_path_info_path = -1;
+static int hf_ndmp_bre_get_path_info_path_attr = -1;
+
 static gint ett_ndmp = -1;
 static gint ett_ndmp_fraghdr = -1;
 static gint ett_ndmp_header = -1;
@@ -414,6 +484,20 @@ static const value_string msg_type_vals[] = {
 #define NDMP_VERSION_NOT_SUPPORTED_ERR	0x1c
 #define NDMP_EXT_DUPL_CLASSES_ERR	0x1d
 #define NDMP_EXT_DANDN_ILLEGAL_ERR	0x1e
+/* NDMP v4 Snapshot Management Extension */
+#define	NDMP_SNAP_EXISTS_ERR		0x20500100
+#define	NDMP_SNAP_NOT_FOUND_ERR		0x20500101
+#define	NDMP_SNAP_READ_ONLY_FS_ERR	0x20500102
+#define	NDMP_SNAP_INVALID_PATH_ERR	0x20500103
+#define	NDMP_SNAP_NO_SPACE_ERR		0x20500104
+#define	NDMP_SNAP_BUSY_ERR			0x20500105
+#define	NDMP_SNAP_INTERNAL_ERR		0x20500106
+#define	NDMP_SNAP_NO_DISK_SPACE		0x20500107
+#define NDMP_BRE_CONTEXT_NOT_FOUND_ERR	0x20500500
+#define NDMP_BRE_CONTEXT_BUSY_ERR		0x20500501
+#define NDMP_BRE_INTERNAL_ERR			0x20500502
+#define NDMP_BRE_NO_SPACE_ERR			0x20500503
+#define NDMP_BRE_NO_DISK_SPACE_ERR		0x20500504
 
 static const value_string error_vals[] = {
 	{NDMP_NO_ERR,			"NO_ERR"},
@@ -447,6 +531,21 @@ static const value_string error_vals[] = {
 	{NDMP_VERSION_NOT_SUPPORTED_ERR,"NDMP_VERSION_NOT_SUPPORTED_ERR"},
 	{NDMP_EXT_DUPL_CLASSES_ERR,	"NDMP_EXT_DUPL_CLASSES_ERR"},
 	{NDMP_EXT_DANDN_ILLEGAL_ERR,	"NDMP_EXT_DANDN_ILLEGAL_ERR"},
+	/* NDMP v4 Snapshot Management Extension */
+	{NDMP_SNAP_EXISTS_ERR,		"NDMP_SNAP_EXISTS_ERR"},
+	{NDMP_SNAP_NOT_FOUND_ERR,	"NDMP_SNAP_NOT_FOUND_ERR"},
+	{NDMP_SNAP_READ_ONLY_FS_ERR,"NDMP_SNAP_READ_ONLY_FS_ERR"},
+	{NDMP_SNAP_INVALID_PATH_ERR,"NDMP_SNAP_INVALID_PATH_ERR"},
+	{NDMP_SNAP_NO_SPACE_ERR,	"NDMP_SNAP_NO_SPACE_ERR"},
+	{NDMP_SNAP_BUSY_ERR,		"NDMP_SNAP_BUSY_ERR"},
+	{NDMP_SNAP_INTERNAL_ERR,	"NDMP_SNAP_INTERNAL_ERR"},
+	{NDMP_SNAP_NO_DISK_SPACE,	"NDMP_SNAP_NO_DISK_SPACE"},
+	/* NDMP V4 Backup Restart Extension */
+	{NDMP_BRE_CONTEXT_NOT_FOUND_ERR,"NDMP_BRE_CONTEXT_NOT_FOUND_ERR"},
+	{NDMP_BRE_CONTEXT_BUSY_ERR,		"NDMP_BRE_CONTEXT_BUSY_ERR"},
+	{NDMP_BRE_INTERNAL_ERR,			"NDMP_BRE_INTERNAL_ERR"},
+	{NDMP_BRE_NO_SPACE_ERR,			"NDMP_BRE_NO_SPACE_ERR"},
+	{NDMP_BRE_NO_DISK_SPACE_ERR,	"NDMP_BRE_NO_DISK_SPACE_ERR"},
 	{0, NULL}
 };
 
@@ -508,9 +607,34 @@ static const value_string error_vals[] = {
 #define NDMP_MOVER_CLOSE 		0xa07
 #define NDMP_MOVER_SET_RECORD_SIZE 	0xa08
 #define NDMP_MOVER_CONNECT 		0xa09
-
-
-
+/* NDMP v4 Snapshot Management Extension */
+#define	NDMP_SNAP_CREATE              		0x20500100
+#define	NDMP_SNAP_DELETE              		0x20500101
+#define	NDMP_SNAP_RECOVER             		0x20500102
+#define	NDMP_SNAP_RENAME              		0x20500103
+#define	NDMP_SNAP_GET_SERVER_INFO     		0x20500104
+#define	NDMP_SNAP_GET_SNAPSHOT_NAMES  		0x20500105
+#define	NDMP_SNAP_GET_SNAPSHOT_STATE  		0x20500106
+#define	NDMP_SNAP_GET_CDR_OP_STATE    		0x20500107
+#define	NDMP_SNAP_GET_SNAPSHOT_PATH   		0x20500108
+#define	NDMP_SNAP_SET_RESERVE         		0x20500109
+#define	NDMP_SNAP_GET_RESERVE_INFO    		0x2050010a
+#define	NDMP_SNAP_SET_SCHEDULE        		0x2050010b
+#define	NDMP_SNAP_GET_SCHEDULE_INFO   		0x2050010c
+#define	NDMP_SNAP_DIR_LIST            		0x2050010d
+#define	NDMP_SNAP_NOTIFY_CREATE_END   		0x20500180
+#define	NDMP_SNAP_NOTIFY_DELETE_END   		0x20500181
+#define	NDMP_SNAP_NOTIFY_RECOVER_END		0x20500182
+/* NDMP V4 Backup Restart Extension */
+#define NDMP_BRE_CREATE_CONTEXT				0x20500500
+#define NDMP_BRE_DELETE_CONTEXT				0x20500501
+#define NDMP_BRE_FLUSH_FILE_HISTORY			0x20500502
+#define NDMP_BRE_PRESET_MOVER				0x20500503
+#define NDMP_BRE_RESTART_BACKUP				0x20500504
+#define NDMP_BRE_GET_SERVER_INFO			0x20500505
+#define NDMP_BRE_GET_CONTEXT_LIST			0x20500506
+#define NDMP_BRE_GET_PATH_INFO				0x20500507
+#define NDMP_MAX							0xffffffff
 
 static const value_string msg_vals[] = {
 	{NDMP_CONFIG_GET_HOST_INFO, 	"CONFIG_GET_HOST_INFO"},
@@ -569,6 +693,33 @@ static const value_string msg_vals[] = {
 	{NDMP_MOVER_CLOSE, 		"MOVER_CLOSE"},
 	{NDMP_MOVER_SET_RECORD_SIZE, 	"MOVER_SET_RECORD_SIZE"},
 	{NDMP_MOVER_CONNECT, 		"MOVER_CONNECT"},
+	/* NDMP v4 Snapshot Management Extension */
+	{NDMP_SNAP_CREATE,		"SNAP_CREATE"},
+	{NDMP_SNAP_DELETE,		"SNAP_DELETE"},
+	{NDMP_SNAP_RECOVER,		"SNAP_RECOVER"},
+	{NDMP_SNAP_RENAME,		"SNAP_RENAME"},
+	{NDMP_SNAP_GET_SERVER_INFO,		"SNAP_GET_SERVER_INFO"},
+	{NDMP_SNAP_GET_SNAPSHOT_NAMES,		"SNAP_GET_SNAPSHOT_NAMES"},
+	{NDMP_SNAP_GET_SNAPSHOT_STATE,		"SNAP_GET_SNAPSHOT_STATE"},
+	{NDMP_SNAP_GET_CDR_OP_STATE,		"SNAP_GET_CDR_OP_STATE"},
+	{NDMP_SNAP_GET_SNAPSHOT_PATH,		"SNAP_GET_SNAPSHOT_PATH"},
+	{NDMP_SNAP_SET_RESERVE,		"SNAP_SET_RESERVE"},
+	{NDMP_SNAP_GET_RESERVE_INFO,		"SNAP_GET_RESERVE_INFO"},
+	{NDMP_SNAP_SET_SCHEDULE,		"SNAP_SET_SCHEDULE"},
+	{NDMP_SNAP_GET_SCHEDULE_INFO,		"SNAP_GET_SCHEDULE_INFO"},
+	{NDMP_SNAP_DIR_LIST,		"SNAP_DIR_LIST"},
+	{NDMP_SNAP_NOTIFY_CREATE_END,		"SNAP_NOTIFY_CREATE_END"},
+	{NDMP_SNAP_NOTIFY_DELETE_END,		"SNAP_NOTIFY_DELETE_END"},
+	{NDMP_SNAP_NOTIFY_RECOVER_END,		"SNAP_NOTIFY_RECOVER_END"},
+	/* NDMP V4 Backup Restart Extension */
+	{NDMP_BRE_CREATE_CONTEXT,	"NDMP_BRE_CREATE_CONTEXT"},
+	{NDMP_BRE_DELETE_CONTEXT,	"NDMP_BRE_DELETE_CONTEXT"},
+	{NDMP_BRE_FLUSH_FILE_HISTORY,	"NDMP_BRE_FLUSH_FILE_HISTORY"},
+	{NDMP_BRE_PRESET_MOVER,	"NDMP_BRE_PRESET_MOVER"},
+	{NDMP_BRE_RESTART_BACKUP,	"NDMP_BRE_RESTART_BACKUP"},
+	{NDMP_BRE_GET_SERVER_INFO,	"NDMP_BRE_GET_SERVER_INFO"},
+	{NDMP_BRE_GET_CONTEXT_LIST,	"NDMP_BRE_GET_CONTEXT_LIST"},
+	{NDMP_BRE_GET_PATH_INFO,	"NDMP_BRE_GET_PATH_INFO"},
 	{0, NULL}
 };
 
@@ -633,7 +784,7 @@ check_ndmp_hdr(tvbuff_t *tvb )
 	/* check message */
 	if(len>=16){
 		tmp=tvb_get_ntohl(tvb, 12);
-		if( (tmp>0xa09) || (tmp==0) ){
+		if( (tmp>NDMP_MAX) || (tmp==0) ){
 			return FALSE;
 		}
 	}
@@ -2764,6 +2915,748 @@ dissect_data_get_state_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
 	return offset;
 }
 
+/* NDMP v4 Snapshot Management Extension */
+static int
+dissect_snap_create_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_create_pathname, offset, NULL);
+	/* snapname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_create_snapname, offset, NULL);
+
+	return offset;
+}
+
+static int
+dissect_snap_delete_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* snapname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_delete_snapname, offset, NULL);
+
+	return offset;
+}
+
+#define NDMP_SNAP_RECOVER_DIR_ONLY_FLAG		0x00000001
+#define NDMP_SNAP_RECOVER_DIR_DATA_FLAG		0x00000002
+#define NDMP_SNAP_RECOVER_EXCEPTION_LOGGING_FLAG	0x00000004
+static const value_string snap_recovery_flag_vals[] = {
+	{NDMP_SNAP_RECOVER_DIR_ONLY_FLAG,		"NDMP_SNAP_RECOVER_DIR_ONLY_FLAG"},
+	{NDMP_SNAP_RECOVER_DIR_DATA_FLAG,		"NDMP_SNAP_RECOVER_DIR_DATA_FLAG"},
+	{NDMP_SNAP_RECOVER_EXCEPTION_LOGGING_FLAG,		"NDMP_SNAP_RECOVER_EXCEPTION_LOGGING_FLAG"},
+};
+
+static int
+dissect_snap_recover_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* snapname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_receover_snapname, offset, NULL);
+
+	/* nlist */
+	offset=dissect_rpc_array(tvb, pinfo, tree, offset,
+		dissect_ndmp_file, hf_ndmp_files);
+
+	/* flags */
+	proto_tree_add_item(tree, hf_ndmp_snap_recovery_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_snap_rename_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* snapname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_rename_snapname, offset, NULL);
+
+	/* new snapname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_rename_new_snapname, offset, NULL);
+	return offset;
+}
+
+/* snap_get_server_info_reply create, recover, reserve support */
+#define NDMP_SNAP_VOLUME_ALLOWED          0x00000001
+#define NDMP_SNAP_SUBVOLUME_ALLOWED       0x00000002
+#define NDMP_SNAP_DRIVE_ALLOWED           0x00000004
+#define NDMP_SNAP_DIRECTORY_ALLOWED       0x00000008
+#define NDMP_SNAP_FILE_ALLOWED            0x00000010
+#define NDMP_SNAP_OTHER_ALLOWED           0x00000020
+static const value_string snap_service_info_flag_vals[] = {
+	{NDMP_SNAP_VOLUME_ALLOWED,		"NDMP_SNAP_VOLUME_ALLOWED"},
+	{NDMP_SNAP_SUBVOLUME_ALLOWED,	"NDMP_SNAP_VOLUME_ALLOWEDNDMP_SNAP_SUBVOLUME_ALLOWED"},
+	{NDMP_SNAP_DRIVE_ALLOWED,		"NDMP_SNAP_DRIVE_ALLOWED"},
+	{NDMP_SNAP_DIRECTORY_ALLOWED,	"NDMP_SNAP_DIRECTORY_ALLOWED"},
+	{NDMP_SNAP_FILE_ALLOWED,		"NDMP_SNAP_FILE_ALLOWED"},
+	{NDMP_SNAP_OTHER_ALLOWED,		"NDMP_SNAP_OTHER_ALLOWED"},
+};
+
+/* snap_get_server_info_reply scheduled snapshot support */
+#define NDMP_SNAP_SCHED_WEEKLY_ALLOWED    0x00000001
+#define NDMP_SNAP_SCHED_DAILY_ALLOWED     0x00000002
+#define NDMP_SNAP_SCHED_HOURLY_ALLOWED    0x00000004
+#define NDMP_SNAP_SCHED_SET_TOD_ALLOWED   0x00000008
+#define NDMP_SNAP_SCHED_SET_DOW_ALLOWED   0x00000010
+#define NDMP_SNAP_SCHED_SET_HL_ALLOWED    0x00000020
+#define NDMP_SNAP_SCHED_SET_PATH_ALLOWED  0x00000040
+static const value_string snap_service_info_schedule_flag_vals[] = {
+	{NDMP_SNAP_SCHED_WEEKLY_ALLOWED,	"NDMP_SNAP_SCHED_WEEKLY_ALLOWED"},
+	{NDMP_SNAP_SCHED_DAILY_ALLOWED,		"NDMP_SNAP_SCHED_DAILY_ALLOWED"},
+	{NDMP_SNAP_SCHED_HOURLY_ALLOWED,	"NDMP_SNAP_SCHED_HOURLY_ALLOWED"},
+	{NDMP_SNAP_SCHED_SET_TOD_ALLOWED,	"NDMP_SNAP_SCHED_SET_TOD_ALLOWED"},
+	{NDMP_SNAP_SCHED_SET_DOW_ALLOWED,	"NDMP_SNAP_SCHED_SET_DOW_ALLOWED"},
+	{NDMP_SNAP_SCHED_SET_HL_ALLOWED,	"NDMP_SNAP_SCHED_SET_HL_ALLOWED"},
+	{NDMP_SNAP_SCHED_SET_PATH_ALLOWED,	"NDMP_SNAP_SCHED_SET_PATH_ALLOWED"},
+};
+
+/* snap_get_server_info_reply recover relocation support */
+#define NDMP_SNAP_RELOC_VOLUME_ALLOWED    0x00000001
+#define NDMP_SNAP_RELOC_SUBVOLUME_ALLOWED 0x00000002
+#define NDMP_SNAP_RELOC_DRIVE_ALLOWED     0x00000004
+#define NDMP_SNAP_RELOC_DIRECTORY_ALLOWED 0x00000008
+#define NDMP_SNAP_RELOC_FILE_ALLOWED      0x00000010
+static const value_string snap_service_info_relocation_flag_vals[] = {
+	{NDMP_SNAP_RELOC_VOLUME_ALLOWED,	"NDMP_SNAP_RELOC_VOLUME_ALLOWED"},
+	{NDMP_SNAP_RELOC_SUBVOLUME_ALLOWED,	"NDMP_SNAP_RELOC_SUBVOLUME_ALLOWED"},
+	{NDMP_SNAP_RELOC_DRIVE_ALLOWED,		"NDMP_SNAP_RELOC_DRIVE_ALLOWED"},
+	{NDMP_SNAP_RELOC_DIRECTORY_ALLOWED,	"NDMP_SNAP_RELOC_DIRECTORY_ALLOWED"},
+	{NDMP_SNAP_RELOC_FILE_ALLOWED,		"NDMP_SNAP_RELOC_FILE_ALLOWED"},
+};
+
+static int
+dissect_snap_get_server_info_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* create_support */
+	proto_tree_add_item(tree, hf_ndmp_snap_service_info_create_support_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* recover_support */
+	proto_tree_add_item(tree, hf_ndmp_snap_service_info_recover_support_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* reserve_support */
+	proto_tree_add_item(tree, hf_ndmp_snap_service_info_reserve_support_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* schedule_support */
+	proto_tree_add_item(tree, hf_ndmp_snap_service_info_schedule_support_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* relocation_support */
+	proto_tree_add_item(tree, hf_ndmp_snap_service_info_relocation_support_flag, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_snap_get_snapshot_names_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_snapshot_names_pathname, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snapnames(tvbuff_t *tvb, int offset, packet_info *pinfo, proto_tree *tree, void* data _U_)
+{
+	/* name */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_snapnames_snapnames_name, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snap_get_snapshot_names_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* snapnames */
+	offset = dissect_rpc_array(tvb, pinfo, tree, offset,
+		dissect_snapnames, hf_ndmp_snap_get_snapnames_snapnames);
+	return offset;
+}
+
+static int
+dissect_snap_get_snapshot_state_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_state_snapname, offset, NULL);
+	return offset;
+}
+
+#define NDMP_SNAP_SNAPSHOT_STATE_PATHNAME_UNS	0x00000001
+#define NDMP_SNAP_SNAPSHOT_STATE_USED_UNS		0x00000002
+#define NDMP_SNAP_SNAPSHOT_STATE_TOTAL_UNS		0x00000004
+#define NDMP_SNAP_SNAPSHOT_STATE_DATE_UNS		0x00000008
+#define NDMP_SNAP_SNAPSHOT_STATE_BUSY_UNS		0x00000010
+#define NDMP_SNAP_SNAPSHOT_STATE_DEPENDENCY_UNS	0x00000020
+static const value_string snap_state_vals[] = {
+	{NDMP_SNAP_SNAPSHOT_STATE_PATHNAME_UNS,		"NDMP_SNAP_SNAPSHOT_STATE_PATHNAME_UNS"},
+	{NDMP_SNAP_SNAPSHOT_STATE_USED_UNS,			"NDMP_SNAP_SNAPSHOT_STATE_USED_UNS"},
+	{NDMP_SNAP_SNAPSHOT_STATE_TOTAL_UNS,		"NDMP_SNAP_SNAPSHOT_STATE_TOTAL_UNS"},
+	{NDMP_SNAP_SNAPSHOT_STATE_DATE_UNS,			"NDMP_SNAP_SNAPSHOT_STATE_DATE_UNS"},
+	{NDMP_SNAP_SNAPSHOT_STATE_BUSY_UNS,			"NDMP_SNAP_SNAPSHOT_STATE_BUSY_UNS"},
+	{NDMP_SNAP_SNAPSHOT_STATE_DEPENDENCY_UNS,	"NDMP_SNAP_SNAPSHOT_STATE_DEPENDENCY_UNS"},
+};
+
+static int
+dissect_snap_get_snapshot_state_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* unsupported */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_unsupported, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_state_pathname, offset, NULL);
+
+	/* used_percent */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_used_precent, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* total_percent */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_total_precent, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* date */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_date, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* snapid */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_snapid, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* busy */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_busy, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* dependency */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_state_dependency, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	return offset;
+}
+
+#define NDMP_SNAP_CREATE_OP		0x20500100
+#define NDMP_SNAP_DELETE_OP		0x20500101
+#define NDMP_SNAP_RECOVER_OP	0x20500102
+static const value_string snap_op_vals[] = {
+	{NDMP_SNAP_CREATE_OP,	"NDMP_SNAP_CREATE"},
+	{NDMP_SNAP_CREATE_OP,	"NDMP_SNAP_CREATE"},
+	{NDMP_SNAP_CREATE_OP,	"NDMP_SNAP_CREATE"},
+};
+
+static int
+dissect_snap_get_cdr_op_state_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* dependency */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_state_type, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_snap_get_cdr_op_state_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* unsupported */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_unsupported, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* total_files */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_total_files, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* processed files */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_processed_files, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* exception_files */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_exception_files, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* date */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_cdr_op_date, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	return offset;
+}
+
+static int
+dissect_snap_get_snapshot_path_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_snapshot_path_pathname, offset, NULL);
+	return offset;
+}
+
+#define NDMP_SNAP_PATH_TYPE_UNCONSTRAINED            1
+#define NDMP_SNAP_PATH_TYPE_PARTIALLY_CONSTRAINED    2
+#define NDMP_SNAP_PATH_TYPE_FULLY_CONSTRAINED        3
+static const value_string snap_path_type_vals[] = {
+	{NDMP_SNAP_PATH_TYPE_UNCONSTRAINED,		"NDMP_SNAP_PATH_TYPE_UNCONSTRAINED"},
+	{NDMP_SNAP_PATH_TYPE_PARTIALLY_CONSTRAINED,			"NDMP_SNAP_PATH_TYPE_PARTIALLY_CONSTRAINED"},
+	{NDMP_SNAP_PATH_TYPE_FULLY_CONSTRAINED,		"NDMP_SNAP_PATH_TYPE_FULLY_CONSTRAINED"},
+};
+
+static int
+dissect_snap_get_snapshot_path_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* max_snapshots */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_snapshot_path_max_snapshots, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* path_type */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_snapshot_path_path_type, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_snapshot_path_pathname, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snap_set_reserve_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_set_reserve_pathname, offset, NULL);
+
+	/* percent */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_reserve_precent, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_snap_get_reserve_info_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_reserve_info_pathname, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snap_get_reserve_info_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* kb */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_reserve_kb, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* percent */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_reserve_precent, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+	return offset;
+}
+
+#define NDMP_SNAP_SCHED_CREATE_NA          0
+#define NDMP_SNAP_SCHED_CREATE_SUNDAY      1
+#define NDMP_SNAP_SCHED_CREATE_MONDAY      2
+#define NDMP_SNAP_SCHED_CREATE_TUESDAY     3
+#define NDMP_SNAP_SCHED_CREATE_WEDNESDAY   4
+#define NDMP_SNAP_SCHED_CREATE_THURSDAY    5
+#define NDMP_SNAP_SCHED_CREATE_FRIDAY      6
+#define NDMP_SNAP_SCHED_CREATE_SATURDAY    7
+static const value_string snap_sched_create_vals[] = {
+	{NDMP_SNAP_SCHED_CREATE_NA,		"NDMP_SNAP_SCHED_CREATE_NA"},
+	{NDMP_SNAP_SCHED_CREATE_SUNDAY,			"NDMP_SNAP_SCHED_CREATE_SUNDAY"},
+	{NDMP_SNAP_SCHED_CREATE_MONDAY,		"NDMP_SNAP_SCHED_CREATE_MONDAY"},
+	{NDMP_SNAP_SCHED_CREATE_TUESDAY, "NDMP_SNAP_SCHED_CREATE_TUESDAY"},
+	{NDMP_SNAP_SCHED_CREATE_WEDNESDAY, "NDMP_SNAP_SCHED_CREATE_WEDNESDAY"},
+	{NDMP_SNAP_SCHED_CREATE_THURSDAY, "NDMP_SNAP_SCHED_CREATE_THURSDAY"},
+	{NDMP_SNAP_SCHED_CREATE_FRIDAY, "NDMP_SNAP_SCHED_CREATE_FRIDAY"},
+	{NDMP_SNAP_SCHED_CREATE_SATURDAY, "NDMP_SNAP_SCHED_CREATE_SATURDAY"},
+};
+
+static int 
+dissect_hourlist(tvbuff_t *tvb, int offset, packet_info *pinfo, proto_tree *tree, void* data _U_)
+{
+	proto_tree_add_item(tree, hf_ndmp_snap_shcedule_hourlist_hour, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_snap_set_schedule_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_set_shcedule_pathname, offset, NULL);
+
+	/* week */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_shcedule_week, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* day */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_shcedule_day, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* hour */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_shcedule_hours, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* hourlist */
+	offset=dissect_rpc_array(tvb, pinfo, tree, offset,
+		dissect_hourlist, hf_ndmp_snap_set_shcedule_hourlist);
+
+	/* day_of_week */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_shcedule_dayofweek, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* time_of_day */
+	proto_tree_add_item(tree, hf_ndmp_snap_set_shcedule_timeofday, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* snappath */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_set_shcedule_snappath, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snap_get_schedule_info_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_shcedule_pathname, offset, NULL);
+	return offset;
+}
+
+static int
+dissect_snap_get_schedule_info_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* week */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_shcedule_week, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* day */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_shcedule_day, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* hour */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_shcedule_hours, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* hourlist */
+	offset=dissect_rpc_array(tvb, pinfo, tree, offset,
+		dissect_hourlist, hf_ndmp_snap_get_shcedule_hourlist);
+
+	/* day_of_week */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_shcedule_dayofweek, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* time_of_day */
+	proto_tree_add_item(tree, hf_ndmp_snap_get_shcedule_timeofday, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* snappath */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_get_shcedule_snappath, offset, NULL);
+	return offset;
+}
+
+#define NDMP_SNAP_DIR_LIST_ABORT_FLAG	1
+static const value_string snap_dir_list_abort_flag_vals[] = {
+	{NDMP_SNAP_DIR_LIST_ABORT_FLAG,		"NDMP_SNAP_DIR_LIST_ABORT_FLAG"},
+};
+
+static int
+dissect_snap_dir_list_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* pathname */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_snap_dir_list_pathname, offset, NULL);
+
+	/* flags */
+	proto_tree_add_item(tree, hf_ndmp_snap_dir_list_flags, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* max entries */
+	proto_tree_add_item(tree, hf_ndmp_snap_dir_list_max_entries, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	return offset;
+}
+
+#define NDMP_SNAP_DIR_LIST_MORE_STATUS	1
+static const value_string snap_dir_list_more_status_vals[] = {
+	{NDMP_SNAP_DIR_LIST_MORE_STATUS,	"NDMP_SNAP_DIR_LIST_MORE_STATUS"},
+};
+
+static int
+dissect_snap_dir_list_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* dir list */
+	offset=dissect_rpc_array(tvb, pinfo, tree, offset,
+		dissect_ndmp_file, hf_ndmp_files);
+
+	/* status */
+	proto_tree_add_item(tree, hf_ndmp_snap_dir_list_status, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+#define NDMP_SNAP_END_REASON_NA              0
+#define NDMP_SNAP_END_REASON_SUCCESS         1
+#define NDMP_SNAP_END_REASON_EXCEPTIONS      2
+#define NDMP_SNAP_END_REASON_FAILURE         3
+#define NDMP_SNAP_END_REASON_INTERNAL_ERROR  4
+static const value_string snap_end_reason_vals[] = {
+	{NDMP_SNAP_END_REASON_NA,				"NDMP_SNAP_END_REASON_NA"},
+	{NDMP_SNAP_END_REASON_SUCCESS,			"NDMP_SNAP_END_REASON_SUCCESS"},
+	{NDMP_SNAP_END_REASON_EXCEPTIONS,		"NDMP_SNAP_END_REASON_EXCEPTIONS"},
+	{NDMP_SNAP_END_REASON_FAILURE,			"NDMP_SNAP_END_REASON_FAILURE"},
+	{NDMP_SNAP_END_REASON_INTERNAL_ERROR,	"NDMP_SNAP_END_REASON_INTERNAL_ERROR"},
+};
+
+static int
+dissect_snap_notify_create_end_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* reason */
+	proto_tree_add_item(tree, hf_ndmp_snap_create_end_reason, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* snapid */
+	proto_tree_add_item(tree, hf_ndmp_snap_create_end_snapid, 
+		tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+	return offset;
+}
+
+static int
+dissect_snap_notify_delete_end_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* reason */
+	proto_tree_add_item(tree, hf_ndmp_snap_delete_end_reason, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+	return offset;
+}
+
+static int
+dissect_snap_notify_recover_end_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* reason */
+	proto_tree_add_item(tree, hf_ndmp_snap_recover_end_reason, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+	return offset;
+}
+
+/* NDMP V4 Backup Restart Extension */
+static int
+dissect_bre_create_context_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* context handle */
+	offset = dissect_rpc_data(tvb, tree, hf_ndmp_bre_context, offset);
+
+	return offset;
+}
+
+static int
+dissect_bre_delete_context_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* context handle */
+	offset = dissect_rpc_data(tvb, tree, hf_ndmp_bre_context, offset);
+	return offset;
+}
+
+static int
+dissect_bre_preset_mover_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* bytes moved */
+	proto_tree_add_item(tree, hf_ndmp_bre_bytes_moved, tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* record_num */
+	proto_tree_add_item(tree, hf_ndmp_bre_record_num, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_bre_restart_backup_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* context handle */
+	offset = dissect_rpc_data(tvb, tree, hf_ndmp_bre_context, offset);
+
+	/* restart offset */
+	proto_tree_add_item(tree, hf_ndmp_bre_restart_offset, tvb, offset, 8, ENC_BIG_ENDIAN);
+	offset += 8;
+
+	/* fh data */
+	/*TODO*/
+	return offset;
+}
+
+static int
+dissect_bre_get_server_info_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* context_attributes */
+	proto_tree_add_item(tree, hf_ndmp_bre_context_attributes, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* restart_attributes */
+	proto_tree_add_item(tree, hf_ndmp_bre_restart_attributes, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* maximum_contexts */
+	proto_tree_add_item(tree, hf_ndmp_bre_maximum_contexts, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+
+	/* restart_block_size */
+	proto_tree_add_item(tree, hf_ndmp_bre_restart_block_size, tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
+static int
+dissect_bre_get_context_list_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/*TODO*/
+	return offset;
+}
+
+static int
+dissect_bre_get_path_info_request(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* path */
+	offset = dissect_rpc_string(tvb, tree,
+			hf_ndmp_bre_get_path_info_path, offset, NULL);
+	return offset;
+}
+
+#define NDMP_BRE_PATH_RESTARTABLE            0x00000001
+static const value_string bre_path_attr[] = {
+	{NDMP_BRE_PATH_RESTARTABLE,		"NDMP_BRE_PATH_RESTARTABLE"},
+};
+
+static int
+dissect_bre_get_path_info_reply(tvbuff_t *tvb, int offset, packet_info *pinfo,
+    proto_tree *tree, guint32 seq _U_)
+{
+	/* error */
+	offset=dissect_error(tvb, offset, pinfo, tree, seq);
+
+	/* path_attributes */
+	proto_tree_add_item(tree, hf_ndmp_bre_get_path_info_path_attr, 
+		tvb, offset, 4, ENC_BIG_ENDIAN);
+	offset += 4;
+	return offset;
+}
+
 typedef struct _ndmp_command {
 	guint32 cmd;
 	int (*request) (tvbuff_t *tvb, int offset, packet_info *pinfo,
@@ -2885,6 +3778,58 @@ static const ndmp_command ndmp_commands[] = {
 		dissect_mover_set_record_size_request, dissect_error},
 	{NDMP_MOVER_CONNECT,
 		dissect_mover_connect_request, dissect_error},
+	/* NDMP v4 Snapshot Management Extension */
+	{NDMP_SNAP_CREATE,
+		dissect_snap_create_request, dissect_error},
+	{NDMP_SNAP_DELETE,
+		dissect_snap_delete_request, dissect_error},
+	{NDMP_SNAP_RECOVER,
+		dissect_snap_recover_request, dissect_error},
+	{NDMP_SNAP_RENAME,
+		dissect_snap_rename_request, dissect_error},
+	{NDMP_SNAP_GET_SERVER_INFO,
+		NULL, dissect_snap_get_server_info_reply},
+	{NDMP_SNAP_GET_SNAPSHOT_NAMES,
+		dissect_snap_get_snapshot_names_request, dissect_snap_get_snapshot_names_reply},
+	{NDMP_SNAP_GET_SNAPSHOT_STATE,
+		dissect_snap_get_snapshot_state_request, dissect_snap_get_snapshot_state_reply},
+	{NDMP_SNAP_GET_CDR_OP_STATE,
+		dissect_snap_get_cdr_op_state_request, dissect_snap_get_cdr_op_state_reply},
+	{NDMP_SNAP_GET_SNAPSHOT_PATH,
+		dissect_snap_get_snapshot_path_request, dissect_snap_get_snapshot_path_reply},
+	{NDMP_SNAP_SET_RESERVE,
+		dissect_snap_set_reserve_request, dissect_error},
+	{NDMP_SNAP_GET_RESERVE_INFO,
+		dissect_snap_get_reserve_info_request, dissect_snap_get_reserve_info_reply},
+	{NDMP_SNAP_SET_SCHEDULE,
+		dissect_snap_set_schedule_request, dissect_error},
+	{NDMP_SNAP_GET_SCHEDULE_INFO,
+		dissect_snap_get_schedule_info_request, dissect_snap_get_schedule_info_reply},
+	{NDMP_SNAP_DIR_LIST,
+		dissect_snap_dir_list_request, dissect_snap_dir_list_reply},
+	{NDMP_SNAP_NOTIFY_CREATE_END,
+		dissect_snap_notify_create_end_request, NULL},
+	{NDMP_SNAP_NOTIFY_DELETE_END,
+		dissect_snap_notify_delete_end_request, NULL},
+	{NDMP_SNAP_NOTIFY_RECOVER_END,
+		dissect_snap_notify_recover_end_request, NULL},
+	/* NDMP V4 Backup Restart Extension */
+	{NDMP_BRE_CREATE_CONTEXT,
+		NULL, dissect_bre_create_context_reply},
+	{NDMP_BRE_DELETE_CONTEXT,
+		dissect_bre_delete_context_request, dissect_error},
+	{NDMP_BRE_FLUSH_FILE_HISTORY,
+		NULL, dissect_error},
+	{NDMP_BRE_PRESET_MOVER,
+		dissect_bre_preset_mover_request, dissect_error},
+	{NDMP_BRE_RESTART_BACKUP,
+		dissect_bre_restart_backup_request, dissect_error},
+	{NDMP_BRE_GET_SERVER_INFO,
+		NULL, dissect_bre_get_server_info_reply},
+	{NDMP_BRE_GET_CONTEXT_LIST,
+		NULL, dissect_bre_get_context_list_reply},
+	{NDMP_BRE_GET_PATH_INFO,
+		dissect_bre_get_path_info_request, dissect_bre_get_path_info_reply},
 	{0, NULL,NULL}
 };
 
@@ -4196,6 +5141,92 @@ proto_register_ndmp(void)
 	{&hf_ndmp_reassembled_length,
 		{"Reassembled NDMP length", "ndmp.reassembled.length",
 		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL } },
+
+	/* NDMP v4 Snapshot Management Extension */
+	{&hf_ndmp_snap_create_pathname,
+		{"Snapshot create pathname", "ndmp.snap.create.pathname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_create_snapname,
+		{"Snapshot create snapname", "ndmp.snap.create.snapname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_delete_snapname,
+		{"Snapshot delete snapname", "ndmp.snap.delete.snapname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_receover_snapname,
+		{"Snapshot receover snapname", "ndmp.snap.receover.snapname",
+		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_recovery_flag,
+		{"Snapshot receover flag", "ndmp.snap.receover.flag",
+		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_rename_snapname,
+		{"Snapshot rename snapname", "ndmp.snap.rename.snapname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_rename_new_snapname,
+		{"Snapshot rename new snapname", "ndmp.snap.rename.new_snapname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_get_snapshot_names_pathname,
+		{"Snapshot get snapshot names", "ndmp.snap.get_snapshot_names.pathname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_get_snapnames_snapnames,
+		{"Snapshot get snapshot snapnames", "ndmp.snap.get_snapshot_names.snapnames.name",
+		FT_NONE, BASE_NONE, NULL, 0, "List of Snapname", HFILL}	},
+	{&hf_ndmp_snap_get_snapnames_snapnames_name,
+		{"Snapshot get snapshot names name", "ndmp.snap.get_snapshot_names.snapnames.name",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_service_info_create_support_flag,
+		{"Snapshot service info create support", "ndmp.snap.serviceinfo.create", FT_UINT32, BASE_HEX, 
+		VALS(snap_service_info_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_service_info_recover_support_flag,
+		{"Snapshot service info recover support", "ndmp.snap.serviceinfo.recover", FT_UINT32, BASE_HEX, 
+		VALS(snap_service_info_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_service_info_reserve_support_flag,
+		{"Snapshot service info reserve support", "ndmp.snap.serviceinfo.reserve", FT_UINT32, BASE_HEX, 
+		VALS(snap_service_info_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_service_info_schedule_support_flag,
+		{"Snapshot service info schedule support", "ndmp.snap.serviceinfo.schedule", FT_UINT32, BASE_HEX, 
+		VALS(snap_service_info_schedule_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_service_info_relocation_support_flag,
+		{"Snapshot service info relocation support", "ndmp.snap.serviceinfo.relocation", FT_UINT32, BASE_HEX, 
+		VALS(snap_service_info_relocation_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_get_snapshot_pathname,
+		{"Snapshot get snapshot pathname", "ndmp.snap.get_snapshot.pathname", 
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL } },
+	{&hf_ndmp_snap_get_state_snapname,
+		{"Snapshot get snapshot state snapname", "ndmp.snap.get_state.snapname", 
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL } },
+	/*fill in all variables here TODO*/
+	{&hf_ndmp_snap_dir_list_pathname,
+		{"Snapshot dir list pathname", "ndmp.snap.dir_list_pathname",
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL}	},
+	{&hf_ndmp_snap_dir_list_flags,
+		{"Snapshot dir list flags", "ndmp.snap.dir_list_flags", FT_UINT32, BASE_HEX, 
+		VALS(snap_dir_list_abort_flag_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_dir_list_max_entries,
+		{"Snapshot dir list max entries", "ndmp.snap.dir_list_maxentries",
+		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_dir_list_status,
+		{"Snapshot dir list more status", "ndmp.snap.dir_list_more_status", FT_UINT32, BASE_HEX, 
+		VALS(snap_dir_list_more_status_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_create_end_reason,
+		{"Snapshot create end reason", "ndmp.snap.create_end.reason", FT_UINT32, BASE_HEX,
+		VALS(snap_end_reason_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_create_end_snapid,
+		{"Snapshot create end snapid", "ndmp.snap.create_end.snapid",
+		FT_UINT64, BASE_HEX, NULL, 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_delete_end_reason,
+		{"Snapshot delete end reason", "ndmp.snap.delete_end.reason", FT_UINT32, BASE_HEX,
+		VALS(snap_end_reason_vals), 0x00, NULL, HFILL } },
+	{&hf_ndmp_snap_recover_end_reason,
+		{"Snapshot recover end reason", "ndmp.snap.recover_end.reason", FT_UINT32, BASE_HEX,
+		VALS(snap_end_reason_vals), 0x00, NULL, HFILL } },
+
+	/* NDMP V4 Backup Restart Extension */
+	{&hf_ndmp_bre_get_path_info_path,
+		{"BRE get path info path", "ndmp.bre.path_info.path", 
+		FT_STRING, BASE_NONE, NULL, 0, NULL, HFILL } },
+	{&hf_ndmp_bre_get_path_info_path_attr,
+		{"BRE path info attributes", "ndmp.bre.path_info.attr", FT_UINT32, BASE_HEX,
+		VALS(bre_path_attr), 0x00, NULL, HFILL } },
 	};
 
 	static gint *ett[] = {
